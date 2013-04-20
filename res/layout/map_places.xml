@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@android:color/black"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        
+        <com.google.android.maps.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:apiKey="0YBGFFPcDn96O1bCMgeYVE31Dom7I8cWQKdvH-g"
+            android:clickable="true" 
+            android:background="@android:color/black"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+       
+
+        <SlidingDrawer
+            android:id="@+id/slidingD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:content="@+id/content"
+            android:handle="@+id/handle" >
+
+            <Button
+                android:id="@+id/handle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:text="Preferences"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:orientation="vertical" >
+                
+                <TextView 
+                   android:layout_width="fill_parent"
+                	android:layout_height="wrap_content"
+                	android:text="Enter Search Radius in Km"
+                	android:textSize="20dp"
+                	android:textColor="@android:color/white"
+                    />
+                <EditText 
+                    android:id="@+id/rad"
+                    android:layout_width="100dp"
+                	android:layout_height="wrap_content"
+                	
+                    />
+
+                <ListView 
+                android:id="@+id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                ></ListView>
+            </LinearLayout>
+        </SlidingDrawer>
+    </LinearLayout>
+
+</FrameLayout>

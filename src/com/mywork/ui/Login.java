@@ -2,17 +2,41 @@ package com.mywork.ui;
 
 
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.example.list.AndroidJSONParsingActivity;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.mywork.onmaps.Calendar;
 import com.mywork.onmaps.Profile;
-import com.mywork.place.AlertDialogManager;
-import com.mywork.place.ConnectionDetector;
 import com.mywork.place.PlacesMapActivity;
 import com.redknot.summary.RetrieveData;
 import com.redknot.summary.SummaryActivity;
+
+import com.redknot.resources.*;
+import com.samtube405.authenticate.Authentication;
+import com.samtube405.singleplace.InboxActivity;
+import com.samtube405.singleplace.JSONParser;
+import com.samtube405.timeline.FileCache;
+import com.samtube405.timeline.ImageLoader;
+import com.samtube405.timeline.MemoryCache;
+import com.samtube405.timeline.TimelineActivity;
+import com.samtube405.timeline.Utils;
 
 
 
@@ -60,6 +84,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.QuickContactBadge;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,12 +102,14 @@ import twitter4j.conf.ConfigurationBuilder;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class Login extends Activity implements OnItemClickListener{
 
-	Button b1,b2,b3,b4;
-	TextView tv1,tv2,tv3,tv4,userlabel;
-	//EditText username,password;
+	
+	TextView tvUSername;
+	QuickContactBadge imguser;
+	
 	
 	User user=null;
 	String username="USER DEFAULT";
+	long userid=0;
 	
 	
 	static String TWITTER_CONSUMER_KEY = "qAxRSYF37YU8lpivnAqRlw";
@@ -122,6 +149,28 @@ public class Login extends Activity implements OnItemClickListener{
 	
 	CoverFlow coverFlow;
 	
+	Authentication au;
+	
+	JSONParser jsonParser_login = new JSONParser();
+	
+	JSONParser jsonParser_icons = new JSONParser();
+	
+	private static final String ADD_USER_URL = "http://redknot.ckreativity.com/android_connect/add_user.php";
+	
+	private static final String GET_ICONS_URL = "http://redknot.ckreativity.com/android_connect/get_icons.php";	
+	
+	private static final String IMG_MARKER_URL = "http://redknot.ckreativity.com/media/map_markers/";
+	
+	private static final String TAG_SUCCESS = "success";
+	private static final String TAG_PROFILE = "profile";	
+	private static final String TAG_USER_NAME = "user_name";
+	private static final String TAG_USER_ID = "user_id";
+	
+	private static final String TAG_CATEGORY = "category";	
+	private static final String TAG_DISPLAY_TAG = "displaytag";
+	private static final String TAG_TYPE = "type";
+	private static final String TAG_ICON = "icon";
+	
 	
 	//@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	@Override
@@ -131,6 +180,10 @@ public class Login extends Activity implements OnItemClickListener{
 		setContentView(R.layout.ui_main);
 		
 		layout=(LinearLayout) findViewById(R.id.rl1);
+		
+		tvUSername=(TextView)findViewById(R.id.tvUsername);
+		
+		imguser=(QuickContactBadge)findViewById(R.id.imguser);
 		
 		//Extra methods Twitter
 		if (Build.VERSION.SDK_INT > 9) {
@@ -182,21 +235,17 @@ public class Login extends Activity implements OnItemClickListener{
 
 		coverFlow.setSpacing(-10);
 
-		coverFlow.setSelection(0, true);
+		coverFlow.setSelection(2, true);
 
 		coverFlow.setAnimationDuration(1000);
 		///////////////////////////////////////////////////////////////
 		
-		//b1=(Button) findViewById(R.id.favs);
-		//b2=(Button) findViewById(R.id.newtour);
-		//b3=(Button) findViewById(R.id.communityhelp);
-		//b4=(Button) findViewById(R.id.intel);
+		
 		
 		btnLoginTwitter=(Button)findViewById(R.id.btnLoginTwitter);
 		btnLogoutTwitter=(Button)findViewById(R.id.btnLogoutTwitter);
 		
-		//userlabel=(TextView)findViewById(R.id.lblUserName);
-		//bsubmit.setOnClickListener(this);
+		
 	
 		/**
 		 * Twitter login button click event will call loginToTwitter() function
@@ -227,25 +276,11 @@ public class Login extends Activity implements OnItemClickListener{
 			public void onClick(View arg0) {
 				// Call logout twitter function
 				logoutFromTwitter();
+				FileCache delf=new FileCache(getApplicationContext());
+				delf.clear();
 			}
-		});
-
-		/*b1.setOnClickListener(this);
-		b2.setOnClickListener(this);
-		b3.setOnClickListener(this);
-		b4.setOnClickListener(this);*/
+		});	
 		
-		gd= new GestureDetector(new MyGestureListener());
-		layout.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				gd.onTouchEvent(event);
-				return true;
-			}
-			
-		});
 		
 		testRedirect();
 
@@ -282,22 +317,13 @@ public class Login extends Activity implements OnItemClickListener{
 					e.commit(); // save changes
 
 					Log.e("Twitter OAuth Token", "> " + accessToken.getToken());
+					
+					//setUserName(twitter,accessToken);
 
-					// Hide login button
-					btnLoginTwitter.setVisibility(View.GONE);
-					
-					b1.setVisibility(View.VISIBLE);
-					b2.setVisibility(View.VISIBLE);
-					b3.setVisibility(View.VISIBLE);
-					b4.setVisibility(View.VISIBLE);
-					
-					tv1.setVisibility(View.VISIBLE);
-					tv2.setVisibility(View.VISIBLE);
-					tv3.setVisibility(View.VISIBLE);
-					tv4.setVisibility(View.VISIBLE);					
+					setEnvironment();			
 
+					new Initialize().execute();
 					
-					setUserName(twitter,accessToken);
 					
 					
 					
@@ -309,13 +335,27 @@ public class Login extends Activity implements OnItemClickListener{
 		}
 	}
 	
-	public boolean dispatchTouchEvent(MotionEvent ev){
-		super.dispatchTouchEvent(ev);
-		if(gd!=null)
-			return gd.onTouchEvent(ev);
+	public void setEnvironment(){
+		btnLoginTwitter.setVisibility(View.GONE);
 		
-		return false;
-		}
+		coverFlow.setVisibility(View.VISIBLE);	
+		tvUSername.setVisibility(View.VISIBLE);
+		imguser.setVisibility(View.VISIBLE);
+		
+		au=new Authentication(this);
+		
+		username=au.getUserName();
+		
+		userid=au.getUserID();
+		
+		tvUSername.setText(username);
+		
+		imguser.setImageBitmap(au.getUserPic());
+		
+		
+	}
+	
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -365,40 +405,17 @@ public class Login extends Activity implements OnItemClickListener{
 				
 			} else {						
 				
-				ConfigurationBuilder builder = new ConfigurationBuilder();
-				builder.setOAuthConsumerKey(TWITTER_CONSUMER_KEY);
-				builder.setOAuthConsumerSecret(TWITTER_CONSUMER_SECRET);
 				
-				// Access Token 
-				String access_token = mSharedPreferences.getString(PREF_KEY_OAUTH_TOKEN, "");
-				// Access Token Secret
-				String access_token_secret = mSharedPreferences.getString(PREF_KEY_OAUTH_SECRET, "");
-				
-				AccessToken accessToken = new AccessToken(access_token, access_token_secret);
-				Twitter twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
-				
-				
-				setUserName(twitter,accessToken);
+				setEnvironment();	
 				
 				Toast.makeText(getApplicationContext(),
 						"Hello You're Already Logged into twitter "+username, Toast.LENGTH_LONG).show();
 				
-				//userlabel.setText(getUserName());
 				
-				// Hide login button
-				btnLoginTwitter.setVisibility(View.GONE);
 				
-				/*b1.setVisibility(View.VISIBLE);
-				b2.setVisibility(View.VISIBLE);
-				b3.setVisibility(View.VISIBLE);
-				b4.setVisibility(View.VISIBLE);*/
 				
-				coverFlow.setVisibility(View.VISIBLE);
 				
-				//tv1.setVisibility(View.VISIBLE);
-				//tv2.setVisibility(View.VISIBLE);
-				//tv3.setVisibility(View.VISIBLE);
-				//tv4.setVisibility(View.VISIBLE);
+				
 				
 			}
 			
@@ -416,15 +433,7 @@ public class Login extends Activity implements OnItemClickListener{
 			//btnLoginTwitter.setVisibility(View.VISIBLE);
 		}
 		
-		public void setUserName(Twitter t,AccessToken a){
-			try {
-				username=t.showUser(a.getUserId()).getName();
-			} catch (TwitterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
+		
 		
 		private boolean isTwitterLoggedInAlready() {
 			// return twitter login status from Shared Preferences
@@ -437,20 +446,21 @@ public class Login extends Activity implements OnItemClickListener{
 			String clicked="";
 			switch(pos){
 			
-			case 0:				
+			case 2:				
 				//new NewTour().execute();
 				Intent i0=new Intent(Login.this,PlacesMapActivity.class);
 				i0.putExtra("username", username);
+				i0.putExtra("userid", String.valueOf(userid));
 				startActivity(i0);
 				break;
 				
-			case 1:
+			case 0:
 				//btn="Intelligence Tour";
-				Intent i1=new Intent(Login.this, BarChart.class);
-				startActivity(i1);
+				//Intent i1=new Intent(Login.this, BarChart.class);
+				//startActivity(i1);
 				break;
 				
-			case 2:
+			case 1:
 				//btn="Favourits";
 				Intent i2=new Intent(Login.this, RetrieveData.class);
 				startActivity(i2);
@@ -458,51 +468,22 @@ public class Login extends Activity implements OnItemClickListener{
 				
 			case 3:
 				//btn="Community";
-				Intent i3=new Intent(Login.this, AndroidJSONParsingActivity.class);
+				Intent i3=new Intent(Login.this, TimelineActivity.class);
 				startActivity(i3);
 				break;
+				
+			case 4:
+				Intent i4=new Intent(Login.this,Profile.class);
+				i4.putExtra("userid", String.valueOf(userid));
+				i4.putExtra("username", String.valueOf(username));
+				startActivity(i4);
+
 			}
 			
-			//Log.d("CLICKED IMAGE: ",v.getId()+" ->"+clicked);
-			//Toast.makeText(CoverFlowExample.this,"You've Clicked "+clicked, Toast.LENGTH_SHORT).show();
-			
+						
 		}
 
-	/*@Override
-	public void onClick(View arg0) {
-	String btn="";
-		
-		switch(arg0.getId()){
-		
-		case R.id.newtour:
-			btn="New Tour";
-			//new NewTour().execute();
-			Intent i0=new Intent(Login.this,PlacesMapActivity.class);
-			i0.putExtra("username", username);
-			startActivity(i0);
-			break;
-			
-		case R.id.intel:
-			//btn="Intelligence Tour";
-			Intent i1=new Intent(Login.this, BarChart.class);
-			startActivity(i1);
-			break;
-			
-		case R.id.favs:
-			//btn="Favourits";
-			Intent i2=new Intent(Login.this, RetrieveData.class);
-			startActivity(i2);
-			break;
-			
-		case R.id.communityhelp:
-			//btn="Community";
-			Intent i3=new Intent(Login.this, AndroidJSONParsingActivity.class);
-			startActivity(i3);
-			break;
-		
-		}
-		
-	}*/
+	
 	
 	@Override
 	protected void onPause() {
@@ -514,91 +495,8 @@ public class Login extends Activity implements OnItemClickListener{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-	}
+	}	
 	
-	public class MyGestureListener  extends GestureDetector.SimpleOnGestureListener{
-
-		private static final int SWIPE_MIN_DISTANCE=100;
-		private static final int SWIPE_MAX_OFF_PATH=100;
-		private static final int SWIPE_THRESHOLD_VELOCITY=50;
-		
-			
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
-			// TODO Auto-generated method stub
-			float dX = e2.getX()-e1.getX();
-
-			float dY = e1.getY()-e2.getY();
-
-			if (Math.abs(dY)<SWIPE_MAX_OFF_PATH &&
-
-			Math.abs(velocityX)>=SWIPE_THRESHOLD_VELOCITY &&
-
-			Math.abs(dX)>=SWIPE_MIN_DISTANCE ) {
-
-				if (dX>0) {
-
-					Toast.makeText(getApplicationContext(),"Right Swipe", Toast.LENGTH_SHORT).show();
-					
-				
-
-				} else {
-
-					//Toast.makeText(getApplicationContext(), "Left Swipe", Toast.LENGTH_SHORT).show();
-					new MyTask().execute();
-				}
-
-				return true;
-			}
-			return false;
-		}
-		
-	}
-	
-	class MyTask extends AsyncTask<String, String, String>{
-
-		@Override
-		protected String doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-			Intent i=new Intent(Login.this,Profile.class);
-			i.putExtra("username", username);
-			startActivity(i);
-			return null;
-		}
-		
-		
-	}
-	
-	class NewTour extends AsyncTask<String, String, String>{
-		
-		  @Override
-	        protected void onPreExecute() {
-	            super.onPreExecute();
-	            pDialog = new ProgressDialog(Login.this);
-	            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading Places..."));
-	            pDialog.setIndeterminate(false);
-	            pDialog.setCancelable(false);
-	            pDialog.show();
-	        }
-
-		@Override
-		protected String doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-			Intent i=new Intent(Login.this, Main.class);
-			startActivity(i);
-			return null;
-		}
-		
-	
-		protected void onPostExecute() {
-            // dismiss the dialog after getting all products
-            pDialog.dismiss();
-            
-		}
-		
-		
-	}
 	
 	public class ImageAdapter extends BaseAdapter{
 
@@ -608,30 +506,13 @@ public class Login extends Activity implements OnItemClickListener{
 
 		private FileInputStream fis;
 
-		private Integer[] mImageIds = {
-
-		//R.drawable.newtourone,
-
-		//R.drawable.newtourtwo,
-
-		//R.drawable.favourites,
-
-		//R.drawable.favouritesone,
-
-		//R.drawable.favouritestwo,
-
-		//R.drawable.weather,
-
-		//R.drawable.weathertwo,
-
-		//R.drawable.community,
-
-		//R.drawable.communityone
+		private Integer[] mImageIds = {		
 			
-		  R.drawable.community,
-		  R.drawable.travel,
-		  R.drawable.find,
-		  R.drawable.bookmark,
+		  R.drawable.ui_recommendation,
+		  R.drawable.ui_charts,
+		  R.drawable.ui_newtour,
+		  R.drawable.ui_timeline,
+		  R.drawable.ui_cage_profile
 
 		};
 
@@ -644,39 +525,6 @@ public class Login extends Activity implements OnItemClickListener{
 			mImages = new ImageView[mImageIds.length];
 			//Toast.makeText(CoverFlowExample.this,"WORKING",Toast.LENGTH_LONG ).show();
 			
-			/*for(int i=0;i<mImageIds.length;i++){
-				
-				
-				ImageView iv=new ImageView(Login.this);
-				
-				iv.setImageResource(mImageIds[i]);
-				
-				//LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300, 300);
-				
-				//iv.setLayoutParams(layoutParams);
-				
-				iv.setLayoutParams(new Gallery.LayoutParams(500, 500));
-				
-				//iv.getLayoutParams().height=200;
-				//iv.getLayoutParams().width=200;
-
-				iv.setScaleType(ImageView.ScaleType.CENTER);
-
-				// Make sure we set anti-aliasing otherwise we get jaggies
-
-				BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
-
-				drawable.setAntiAlias(true);
-				
-				mImages[i]=iv;
-				mImages[i].setClickable(true);
-				mImages[i].setId(i);
-				
-				
-				
-				//Log.d("SET ITEM:",""+mImages[i].getId());
-			}*/
-			//createReflectedImages();
 		}
 
 		public boolean createReflectedImages() {
@@ -851,6 +699,202 @@ public class Login extends Activity implements OnItemClickListener{
 		
 
 	}
+	
+
+	/**
+	 * Background Async Task to Load all INBOX messages by making HTTP Request
+	 * */
+	class Initialize extends AsyncTask<String, String, String> {
+		
+
+		private int success;
+		
+		
+
+
+		/**
+		 * Before starting background thread Show Progress Dialog
+		 * */
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(Login.this);
+			pDialog.setMessage("Initialize with RedKnot...");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(false);
+			pDialog.show();
+		}
+
+		/**
+		 * getting Inbox JSON
+		 * */
+		protected String doInBackground(String... args) {
+			
+			// Building Parameters
+			List<NameValuePair> params = new ArrayList<NameValuePair>();			
+			
+			params.add(new BasicNameValuePair(TAG_USER_NAME, username));
+			params.add(new BasicNameValuePair(TAG_USER_ID, String.valueOf(userid)));
+			
+			// getting JSON string from URL
+			JSONObject json = jsonParser_login.makeHttpRequest(ADD_USER_URL, "POST",
+					params);
+
+			// Check your log cat for JSON reponse
+			Log.d("User JSON: ", json.toString());
+			
+			try {
+				success=json.getInt(TAG_SUCCESS);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+					
+
+			return null;
+		}		
+		
+
+		/**
+		 * After completing background task Dismiss the progress dialog
+		 * **/
+		protected void onPostExecute(String file_url) {
+			// dismiss the dialog after getting all products
+			pDialog.dismiss();			
+			
+			if(success==1){
+				Toast.makeText(getApplicationContext(),
+						"Hello Welcome "+username+" to the RedKnot community ", Toast.LENGTH_LONG).show();				
+			}else{
+				Toast.makeText(getApplicationContext(),
+						"You're already in the RedKnot community "+username, Toast.LENGTH_LONG).show();
+			}
+			
+			new LoadIcons().execute();
+				
+			
+
+		}
+		
+		
+
+	}
+	
+	class LoadIcons extends AsyncTask<String, String, String> {
+		
+		private int success;
+		
+		
+
+		private JSONArray icons;
+		
+		ArrayList<HashMap<String, String>> iconList = new ArrayList<HashMap<String, String>>();
+
+		private int icon_success;
+
+		private ProgressDialog pDialog2;
+
+
+		/**
+		 * Before starting background thread Show Progress Dialog
+		 * */
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog2 = new ProgressDialog(Login.this);
+			pDialog2.setMessage("Configuring Environment...");
+			pDialog2.setIndeterminate(false);
+			pDialog2.setCancelable(false);
+			pDialog2.show();
+		}
+
+		/**
+		 * getting Inbox JSON
+		 * */
+		protected String doInBackground(String... args) {
+			
+			MemoryCache memoryCache=new MemoryCache();
+			
+			ImageLoader imgLoader=new ImageLoader(getApplicationContext());
+			
+			// Building Parameters
+			List<NameValuePair> no_params = new ArrayList<NameValuePair>();
+			
+			//no_params.add(new BasicNameValuePair(TAG_USER_NAME, username));
+				
+				// getting JSON string from URL
+				JSONObject json_icons = jsonParser_icons.makeHttpRequest(GET_ICONS_URL, "GET",
+						no_params);
+
+				// Check your log cat for JSON reponse
+				Log.d("Icons JSON: ", json_icons.toString());
+
+				try {
+					icons = json_icons.getJSONArray(TAG_CATEGORY);
+					// looping through All messages
+					for (int i = 0; i < icons.length(); i++) {
+						JSONObject c = icons.getJSONObject(i);
+
+						// Storing each json item in variable
+						String displaytag = c.getString(TAG_DISPLAY_TAG);
+						
+						String type = c.getString(TAG_TYPE);
+						
+						String icon_url = IMG_MARKER_URL+c.getString(TAG_ICON);
+						
+						// creating new HashMap
+						HashMap<String, String> map = new HashMap<String, String>();
+
+						// adding each child node to HashMap key => value
+						map.put(TAG_DISPLAY_TAG, displaytag);
+						map.put(TAG_TYPE, type);
+						map.put(TAG_ICON, icon_url);
+						
+						Bitmap bmp=imgLoader.getBitmap(icon_url);
+						
+			            memoryCache.put(icon_url, bmp);
+						
+
+						// adding HashList to ArrayList
+						iconList.add(map);
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				
+			
+			
+			try {
+				icon_success=json_icons.getInt(TAG_SUCCESS);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			
+			
+			return null;
+		}		
+		
+
+		/**
+		 * After completing background task Dismiss the progress dialog
+		 * **/
+		protected void onPostExecute(String file_url) {
+			// dismiss the dialog after getting all products
+			pDialog2.dismiss();			
+			
+			if(icon_success==1) Log.d("Icons Cached :","True");
+				
+
+		}
+		
+	}
+
 
 	
 	

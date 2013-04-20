@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
+     >
+     
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10"
+     >
+
+		<TextView
+		    android:id="@+id/tvName"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Place"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:textColor="@color/black" 
+		    />
+
+		<EditText
+		    android:id="@+id/etName"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:ems="10" 
+		    android:layout_marginLeft="20dp"/>
+     
+     </LinearLayout>
+
+     <LinearLayout
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_weight="96.18"
+         android:orientation="horizontal"
+         android:weightSum="20" >
+
+		<TextView
+	    android:id="@+id/tvAddress"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Address"
+	    android:textColor="@color/black" />
+
+		<EditText
+		    android:id="@+id/etAddress"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_marginLeft="20dp"
+		    android:ems="10"
+		    android:inputType="textPostalAddress" >
+
+	    <requestFocus />
+	</EditText>
+     
+     </LinearLayout>
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10"
+     >
+		<TextView
+		    android:id="@+id/tvContact"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Contact"		    
+		    android:textColor="@color/black" />
+
+		<EditText
+		    android:id="@+id/etContact"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="20dp"
+		    android:layout_weight="17.59"
+		    android:ems="10"
+		    android:inputType="phone" />
+     
+     </LinearLayout>
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="15"
+     >
+
+         <TextView
+             android:id="@+id/tvCategory"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Category"
+             android:textColor="@color/black" />
+		
+		 <Spinner
+         android:id="@+id/spinner1"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" 
+         android:layout_marginLeft="5dp"/>
+     
+     </LinearLayout>
+
+    
+
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="15"
+     >
+		 <TextView
+		    android:id="@+id/tvTypes"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Types"		    
+		    android:textColor="@color/black" />
+		
+		 <Spinner
+         android:id="@+id/spinner2"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="20dp" />
+     
+     </LinearLayout>
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10"
+     >
+		<TextView
+		    android:id="@+id/tvRating"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Rating"		    
+		    android:textColor="@color/black" />
+
+         <RatingBar
+             android:id="@+id/rbuserrating"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="1dp"
+             android:numStars="5" />
+      
+     </LinearLayout>
+
+    
+
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10"
+     >
+
+      <ImageButton
+          android:id="@+id/ibChat"
+          android:layout_width="102dp"
+          android:layout_height="wrap_content"
+          android:src="@android:drawable/sym_action_chat" />
+
+    <ImageButton
+        android:id="@+id/ibCam"
+        android:layout_width="116dp"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_camera" />
+
+    <Button
+        android:id="@+id/bSave"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Save" />
+     
+     </LinearLayout>
+    
+
+</LinearLayout>

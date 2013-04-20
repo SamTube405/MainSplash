@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector"
+    android:orientation="horizontal"
+    android:padding="5dip" 
+    android:weightSum="100">
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="80" >    
+    
+	    <ImageView
+	            android:id="@+id/list_image"
+	            android:layout_width="50dip"
+	            android:layout_height="50dip"
+	            android:src="@drawable/icon_inbox"/>
+    
+    </LinearLayout>
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:layout_weight="20"
+    android:weightSum="100"
+    android:orientation="vertical">
+    
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:layout_weight="80"
+    android:weightSum="100"
+    android:orientation="horizontal">
+    
+            <TextView
+        android:id="@+id/tvuser_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:text="Trincomalee Nilaweli"
+        android:layout_weight="20"        
+        android:typeface="sans"
+        android:textSize="14dip"
+        android:textStyle="bold"/>
+    
+             <!-- Rightend Duration -->
+   			 <TextView
+        android:id="@+id/tvTdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/user_name"
+        android:layout_weight="80"
+        android:gravity="right"        
+        android:layout_marginRight="5dip"
+        android:textSize="10dip"        
+        android:textStyle="bold"/> 
+        
+            </LinearLayout>
+    
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:layout_weight="20"
+    android:orientation="horizontal">
+   			 
+            <TextView
+        android:id="@+id/tvTweet"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dip"
+        android:text="Andrew Jayakody"        
+        android:textSize="10dip" />
+    
+            </LinearLayout>
+	    
+    
+
+    
+ 
+   
+    
+    
+    </LinearLayout>
+    
+    
+    
+    </LinearLayout>
+
+

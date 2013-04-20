@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/rl">
+    
+        
+    <com.google.android.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="0YBGFFPcDn96O1bCMgeYVE31Dom7I8cWQKdvH-g"
+        android:clickable="true" />
+
+     <!--<ImageButton
+        android:id="@+id/pasttourib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/changepassib"
+        android:layout_marginLeft="25dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/bus" />
+
+    <TextView
+        android:id="@+id/mytourstv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pasttourib"
+        android:layout_below="@+id/pasttourib"
+        android:text="My Tours"
+        android:textColor="@android:color/white" />
+
+    <ImageButton
+        android:id="@+id/analyzeib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/pasttourib"
+        android:layout_marginLeft="145dp"
+        android:src="@drawable/analyze" 
+              android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/changepassib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/imageView1"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="56dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/key" />
+
+    <TextView
+        android:id="@+id/settingstv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/touranalyzetv"
+        android:layout_alignBottom="@+id/touranalyzetv"
+        android:layout_alignLeft="@+id/changepassib"
+        android:text="Settings"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/touranalyzetv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mytourstv"
+        android:layout_alignBottom="@+id/mytourstv"
+      	android:layout_marginLeft="125dp"
+        android:text="Tour Analyzer"
+        android:textColor="@android:color/white" />-->
+    
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/profile_avatar" />
+
+    <TextView
+        android:id="@+id/actnametv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/imageView1"
+        android:text="John Smith"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="17dp"
+        android:textSize="25dp" />
+    
+
+	
+
+    </RelativeLayout>
+
+    
+    

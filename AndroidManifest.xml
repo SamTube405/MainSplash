@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mywork.ui"
+    android:versionCode="1"
+    android:versionName="2.1" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>  
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+     
+    
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/redknot"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+         <uses-library android:name="com.google.android.maps"/>
+        <activity
+            android:name="com.mywork.splash.MainSplash"
+            android:label="@string/app_name" >            
+        </activity>
+       <activity 
+           android:name="com.mywork.ui.Profile"
+           ></activity>
+       <activity 
+           android:name="com.mywork.ui.Login"
+           >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="oauth" android:host="t4jsample"/>
+            </intent-filter>           
+       </activity>
+       
+       <activity 
+           android:name="com.mywork.ui.MainInterface"
+           >         
+           
+            
+       </activity>
+       
+       <activity 
+           android:name="com.mywork.ui.Menu"
+           >
+           
+       </activity>
+       <activity 
+           android:name="com.mywork.ui.Main"
+           ></activity>
+       <activity 
+           android:name="com.mywork.ui.CustomPinpoint"
+           ></activity>
+        <activity 
+           android:name="com.mywork.ui.Intelligence"
+           ></activity>
+         <activity 
+           android:name="com.mywork.ui.Community"
+           ></activity>
+          <activity 
+           android:name="com.mywork.ui.Favourits"
+           ></activity>
+           <activity 
+           android:name="com.mywork.ui.TourAnalyzer"
+           ></activity>
+            <activity 
+           android:name="com.mywork.ui.Settings"
+           ></activity>
+             <activity 
+           android:name="com.mywork.ui.MyTours"
+           ></activity>
+              <activity 
+           android:name="com.mywork.ui.BarChart"
+           ></activity>
+               <activity 
+            android:name="com.mywork.place.AlertDialogManager"
+            ></activity>
+         <activity 
+            android:name="com.mywork.place.ConnectionDetector"
+            ></activity>
+          <activity 
+            android:name="com.mywork.place.GooglePlaces"
+            ></activity>
+           <activity 
+            android:name="com.mywork.place.GPSTracker"
+            ></activity>
+            <activity 
+            android:name="com.mywork.place.Place"
+            ></activity>
+             <activity 
+            android:name="com.mywork.place.PlaceDetails"
+            ></activity>
+              <activity 
+            android:name="com.mywork.place.PlaceList"
+            ></activity>
+               <activity 
+            android:name="com.mywork.place.SinglePlaceActivity"
+            ></activity>
+               <activity 
+            android:name="com.mywork.place.PlacesMain"
+            ></activity>
+               <activity 
+            android:name="com.mywork.place.PlacesMapActivity"
+            android:screenOrientation="landscape"
+            ></activity>
+               <activity 
+            android:name="com.mywork.place.SinglePlace"
+            ></activity>
+               <activity 
+            android:name="com.mywork.place.AllPlaces"
+            ></activity>
+               <activity 
+            android:name="com.mywork.onmaps.Profile"
+            ></activity>
+               <activity 
+            android:name="com.mywork.onmaps.MyTours"
+            ></activity>
+               <activity 
+            android:name="com.mywork.onmaps.Calendar"
+            ></activity>
+               
+        <activity android:name="com.samtube405.community.CustomizedListView" android:label="@string/app_name">
+            
+        </activity>
+        
+        <activity
+            android:label="@string/app_name"
+            android:name="com.samtube405.gallery.AndroidGridLayoutActivity" >            
+        </activity>
+        
+        <!-- FullImageActivity -->
+        <activity 
+           android:name="com.samtube405.gallery.FullImageActivity"
+            ></activity>
+        
+        <activity 
+            android:name="com.example.list.AndroidJSONParsingActivity"
+            ></activity>        
+        
+        <activity 
+            android:name="com.example.list.SingleMenuItemActivity"
+            android:label="Single Item Selected"></activity>
+        
+        <activity
+            android:configChanges="keyboardHidden|orientation"
+            android:name="com.samtube405.singleplace.AndroidTabAndListView"
+             ></activity>
+
+        <!-- Inbox Activity -->
+        <activity android:name="com.samtube405.singleplace.InboxActivity" />
+
+                
+        <!-- Camera Activity -->
+        <activity android:name="com.samtube405.singleplace.Camera" />
+
+        <!-- Profile Activity -->
+        <activity android:name="com.samtube405.singleplace.ProfileActivity" />
+        
+        
+        
+        <activity
+            android:name="com.sam.addplace.Addplace"            
+            ></activity>
+        
+        <activity 
+            android:name="com.samtube405.timeline.TimelineActivity"
+            ></activity>
+        
+        
+        
+       <activity
+            android:name="com.redknot.summary.RetrieveData"
+             ></activity>
+        <activity 
+            android:name="com.redknot.summary.LazyAdapter"
+            ></activity>
+        <activity 
+            android:name="com.redknot.summary.SummaryActivity"
+            ></activity>
+       <activity 
+            android:name="com.redknot.summary.PieChart"
+            ></activity>
+       
+       <activity 
+            android:name="com.redknot.summary.BarChart"
+            ></activity>
+        
+        
+        
+        
+    </application>
+
+</manifest>
