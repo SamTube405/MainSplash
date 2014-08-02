@@ -112,8 +112,8 @@ public class Login extends Activity implements OnItemClickListener{
 	long userid=0;
 	
 	
-	static String TWITTER_CONSUMER_KEY = "qAxRSYF37YU8lpivnAqRlw";
-	static String TWITTER_CONSUMER_SECRET = "IPAVrefUlRboe1pDY72rOVxs66Djx1TrdO3lJHgZs";
+	static String TWITTER_CONSUMER_KEY = "";
+	static String TWITTER_CONSUMER_SECRET = "";
 	
 	static String PREFERENCE_NAME = "twitter_oauth";
 	static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
